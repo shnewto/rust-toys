@@ -1,0 +1,7 @@
+[package]
+name = "integer_partitions"
+version = "0.1.0"
+authors = ["shea newton <snewton@polysync.io>"]
+
+[dependencies]
+quickcheck = "0.3"
