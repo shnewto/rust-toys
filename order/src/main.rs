@@ -6,8 +6,6 @@ fn main() {
 }
 
 pub fn order( input: &str ) -> String {
-// pub fn order( input: &str ) {
-
     let split = input.split(" ");
     let mut tokens = Vec::new();
 
