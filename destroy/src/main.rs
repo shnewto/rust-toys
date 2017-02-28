@@ -10,8 +10,10 @@ pub fn destroy(input_sets: Vec<HashSet<char>>) -> String {
     let mut initial = String::from("a b c d e f g h i j k l m n o p q r s t u v w x y z");
     for idx in &input_sets {
         for c in idx {
-            let s = &c.to_string();
-            initial = initial.replace( s, "_" );
+            if *c != ' ' {
+                let s = &c.to_string();
+                initial = initial.replace( s, "_" );
+            }
         }
     }
 

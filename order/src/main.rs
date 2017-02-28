@@ -1,12 +1,8 @@
 #![feature(test)]
 extern crate test;
-extern crate regex;
-
-use regex::Regex;
 
 fn main() {
     println!("{}", order("is2 Thi1s T4est 3a"));
-    // order("is2 Thi1s T4est 3a");
 }
 
 pub fn order( input: &str ) -> String {
@@ -14,33 +10,28 @@ pub fn order( input: &str ) -> String {
 
     let split = input.split(" ");
     let mut tokens = Vec::new();
-    let mut nums: Vec<usize> = Vec::new();
 
     for s in split {
         tokens.push(s);
     }
 
+    let nums = input.chars().filter_map(|a| a.to_digit(10)).collect::<Vec<_>>();
+
     if tokens.len() < 2 {
         return input.to_string()
-    }
-
-    let re = Regex::new(r"\d+").unwrap();
-
-    for cap in re.captures_iter(input) {
-        let num = &cap[0].to_string();
-        nums.push(num.parse::<usize>().unwrap());
     }
 
     if nums.len() != tokens.len() {
         println!("Rules of the game weren't followed!");
         return input.to_string()
     }
-    const val: usize = nums.len();
-    let mut ordered: [String; val];
 
-    for idx in 0..tokens.len() {
-        // println!("ordered.insert({}, {})", nums[idx], t);
-        ordered[nums[idx]] = tokens[idx].to_string();
+    // const val: usize = nums.len();
+    let mut ordered = vec![String::new(); nums.len()];
+
+    for idx in 0..nums.len() {
+        let n: u32 = nums[idx] - 1;
+        ordered[n as usize] = tokens[idx as usize].to_string();
     }
 
     let mut retval = String::new();

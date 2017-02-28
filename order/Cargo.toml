@@ -4,4 +4,3 @@ version = "0.1.0"
 authors = ["shea newton <snewton@polysync.io>"]
 
 [dependencies]
-regex = "0.2"
