@@ -40,45 +40,64 @@ fn main() {
 
 }
 
-static mut A: [u32; 1000000] = [1;1000000];
-static mut I: u32 = 0;
+// static mut A: [u32; 1000000] = [1;1000000];
+// static mut I: u32 = 0;
 
-fn dbl_linear(n: u32) -> u32{
+fn dbl_linear(n: u32) -> u32 {
 
-    unsafe {
-        if I >= n {
-            return A[n as usize]
+    // unsafe {
+    //     if I >= n {
+    //         return A[n as usize]
+    //     }
+    // }
+
+    let mut v:Vec<u32> = vec![0; (n+2) as usize];
+    v[0] = 1;
+    // let mut b = n;
+
+    // while b >= 10 {
+        for i in 0..n - 2 {
+            let x: u32 = v[i as usize];
+            println!("{}", 2 * x + 1);
+            let y = 2 * x + 1;
+            let mut j = i + 1;
+
+            while j < v.len() as u32 {
+                if (y < v[j as usize] as u32) || (v[j as usize] == 0) {
+                    v[j as usize] = y;
+                    break;
+                }
+                j += 1;
+            }
+
+            let z = 3 * x + 1;
+
+            j = i + 1;
+
+            while j < v.len() as u32 {
+                if (z < v[j as usize] as u32) || (v[j as usize] == 0) {
+                    v[j as usize] = z;
+                    break;
+                }
+                j += 1;
+            }
         }
-    }
 
-    let mut v:Vec<u32> = vec![];
-    
-    v.push(1);
+        // v.sort();
+        // v.dedup();
 
-    let mut b = n;
+        // v.truncate((n + 1) as usize);
 
-    while b >= 10 {   
-        for i in 0..n {
-            let x = v[i as usize];
-            v.push( 2 * x + 1 );
-            v.push( 3 * x + 1 );
-        }
+        // b = b/10;
+    // }
 
-        v.sort();
-        v.dedup(); 
+    // unsafe {
+    //     for i in 0..v.len() {
+    //         A[i as usize] = v[i as usize];
+    //     }
 
-        v.truncate((n + 1) as usize);
-
-        b = b/10;
-    }
-
-    unsafe {
-        for i in 0..v.len() {
-            A[i as usize] = v[i as usize];
-        }
-
-        I = v.len() as u32;
-    }
+    //     I = v.len() as u32;
+    // }
 
     v[n as usize]
 }
