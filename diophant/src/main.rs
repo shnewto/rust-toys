@@ -20,23 +20,6 @@ fn main() {
 
 }
 
-fn q_sqrt( n:f64 ) -> u64 {
-	let mut i: u64;
-	let mut x2: f64;
-    let mut y: f64;
-	let threehalfs: f64 = 1.5;
-
-	x2 = n * 0.5;
-	y  = n;
-	i  = y as u64;                       // evil floating point bit level hacking
-	i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
-	y  = i as f64;
-	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-//	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
-
-	y as u64
-}
-
 fn solequa(n: u64) -> Vec<(u64, u64)> {
     let mut ret = Vec::new();
     let mut x: u64;
@@ -44,7 +27,6 @@ fn solequa(n: u64) -> Vec<(u64, u64)> {
 
     x = (n as f64).sqrt() as u64;
 
-    println!("?{} -- x{}", 1/q_sqrt(n as f64), x);
     let xlimit = n / 2 + 1;
 
     if n % 2 == 0 {
