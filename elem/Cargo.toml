@@ -1,0 +1,6 @@
+[package]
+name = "elem"
+version = "0.1.0"
+authors = ["shea newton <snewton@polysync.io>"]
+
+[dependencies]
