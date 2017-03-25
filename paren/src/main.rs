@@ -4,35 +4,37 @@ fn main() {
 
 fn valid_braces(s: &str) -> bool {
 
-    let mut paren = 0;
-    let mut brace = 0;
-    let mut bracket = 0;
+    let mut v = Vec::new();
 
     for c in s.chars() {
+
         match c {
-            '(' => {
-                    paren += 1
-                },
             ')' => {
-                    paren -= 1
-                },
-            '{' => {
-                    brace += 1
+                    if v.last() == Some(&'(') {
+                        v.pop();
+                    } else {
+                        v.push(c);
+                    }
                 },
             '}' => {
-                    brace -= 1
-                },
-            '[' => {
-                    bracket += 1
+                    if v.last() == Some(&'{') {
+                        v.pop();
+                    } else {
+                        v.push(c);
+                    }
                 },
             ']' => {
-                    bracket += 1
+                    if v.last() == Some(&'[') {
+                        v.pop();
+                    } else {
+                        v.push(c);
+                    }
                 },
-            _ => {}
+            _ => { v.push(c) }
         }
     }
 
-    if (paren == 0) && (brace == 0) && (bracket == 0) {
+    if v.len() == 0 {
         true
     } else {
         false
@@ -41,6 +43,8 @@ fn valid_braces(s: &str) -> bool {
 
 #[test]
 fn basic_tests() {
-  expect_true("()");
-  expect_false("[(])");
+  assert_eq!(valid_braces("(){}[]"), true);
+  assert_eq!(valid_braces("(}"), false);
+  assert_eq!(valid_braces("[(])"), false);
+  assert_eq!(valid_braces("([{}])"), true);
 }
