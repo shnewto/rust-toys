@@ -1,8 +1,28 @@
 fn main() {
-    println!("yolo world");
+    // assert_eq!(brain_luck(",>,<[>[->+>+<<]>[-<<-[>]>>>[<[-<->]<[>]>>[[-]>>+<]>-<]<<]>>>+<<[-<<+>>]<<<]>>>>>[-<<<<<+>>>>>]<<<<<.>>>>>[-<<<<<+>>>>>]<<<<<.", vec![12, 2]), vec![6]);
+    // assert_eq!(brain_luck(",>,<[>[->+>+<<]>[-<<-[>]>>>[<[-<->]<[>]>>[[-]>>+<]>-<]<<]>>>+<<[-<<+>>]<<<]>>>>>[-<<<<<+>>>>>]<<<<<.", vec![12, 2]), vec![6]);
+    // assert_eq!(brain_luck(",>,<[>[->+>+<<]>[-<<-[>]>>>[<[-<->]<[>]>>[[-]>>+<]>-<]<<]>>>+<<[-<<+>>]<<<]>>>>>[-<<<<<+>>>>>]<<<<<.", vec![12, 2]), vec![6]);
+    // assert_eq!(brain_luck(",>,<[>[->+>+<<]>[-<<-[>]>>>[<[-<->]<[>]>>[[-]>>+<]>-<]<<]>>>+<<[-<<+>>]<<<]>>>>>[-<<<<<+>>>>>]<<<<<.", vec![12, 2]), vec![6]);
 }
 
 
+// > increment the data pointer (to point to the next cell to the right).
+//
+// < decrement the data pointer (to point to the next cell to the left).
+//
+// + increment (increase by one, truncate overflow: 255 + 1 = 0) the byte at the data pointer.
+//
+// - decrement (decrease by one, treat as unsigned byte: 0 - 1 = 255 ) the byte at the data pointer.
+//
+// . output the byte at the data pointer.
+//
+// , accept one byte of input, storing its value in the byte at the data pointer.
+//
+// [ if the byte at the data pointer is zero, then instead of moving the instruction pointer forward 
+// to the next command, jump it forward to the command after the matching ] command.
+//
+// ] if the byte at the data pointer is nonzero, then instead of moving the instruction pointer 
+// forward to the next command, jump it back to the command after the matching [ command.
 
 // the function ez_vec takes a static string and a terminating byte and returns an owned Vec<u8> for convenience
 // Without it, character-based tests are a pain
@@ -70,7 +90,7 @@ fn tape_val_inc(data:&mut Vec<u8>, dptr: usize) {
     if data[dptr] == 255 {
         data[dptr] = 0;
     } else {
-        data[dptr] += 1;
+        data[dptr] += 1; 
     } 
 }
 
@@ -90,20 +110,19 @@ fn tape_write(data:&mut Vec<u8>, dptr: usize, input: &Vec<u8>, input_ptr: &mut u
 fn tape_seek_forward(instructions: &Vec<char>, data: u8, instr_ptr: &mut usize) {
     if data == 0 {
         let mut found = false;
-        let mut mine = true;
+        let mut mine = 0;
 
         *instr_ptr += 1;
-
         while found == false {
             match instructions[*instr_ptr] {
                 '[' => {
-                    mine = false;
+                    mine += 1;
                 }
                 ']' => {
-                    if mine == true {
+                    if mine == 0 {
                         found = true;
                     } else {
-                        mine = true;
+                        mine -= 1;
                     }
                 }                            
                 _ => {}
@@ -118,22 +137,22 @@ fn tape_seek_forward(instructions: &Vec<char>, data: u8, instr_ptr: &mut usize) 
 fn tape_seek_back(instructions: &Vec<char>, data: u8, instr_ptr: &mut usize) {
     if data != 0 {
         let mut found = false;
-        let mut mine = true;
+        let mut mine = 0;
 
         *instr_ptr -= 1;
 
         while found == false {
             match instructions[*instr_ptr] {
                 ']' => {
-                    mine = false;
+                    mine += 1;
                     *instr_ptr -= 1;
                 }
                 '[' => {
-                    if mine == true {
+                    if mine == 0 {
                         found = true;
                         *instr_ptr += 1;
                     } else {
-                        mine = true;
+                        mine -= 1;
                         *instr_ptr -= 1;
                     }
                 }                            
@@ -148,7 +167,6 @@ fn tape_seek_back(instructions: &Vec<char>, data: u8, instr_ptr: &mut usize) {
 }
 
 fn brain_luck(code: &str, input: Vec<u8>) -> Vec<u8> {
-    // println!("code: {:?} -- input: {:?}", code, input);
     let instructions: Vec<char> = code.chars().collect();
     let mut dptr = 0;
     let mut instr_ptr = 0;
@@ -156,10 +174,8 @@ fn brain_luck(code: &str, input: Vec<u8>) -> Vec<u8> {
     let mut output = vec![];
     let mut data: Vec<u8> = vec![0;1];
     let instr_len = instructions.len();
-    // println!("1");    
+
     while instr_ptr < instr_len {
-    // loop {
-        // println!("{}", instructions[instr_ptr]);
         match instructions[instr_ptr] {
             '>' => {
                 tape_forward(&mut data, &mut dptr);
@@ -195,6 +211,5 @@ fn brain_luck(code: &str, input: Vec<u8>) -> Vec<u8> {
         }
     }
 
-    println!("\n\n{:?}\n\n", data);
     output
 }
