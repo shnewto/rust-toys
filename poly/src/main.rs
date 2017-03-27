@@ -3,20 +3,20 @@ fn main() {
 }
 
 
-// bool PointInPolygon(Point point, Polygon polygon) {
-//   vector<Point> points = polygon.getPoints();
-//   int i, j, nvert = points.size();
-//   bool c = false;
+// Description:
 
-//   for(i = 0, j = nvert - 1; i < nvert; j = i++) {
-//     if( ( (points[i].y >= point.y ) != (points[j].y >= point.y) ) &&
-//         (point.x <= (points[j].x - points[i].x) * (point.y - points[i].y) / (points[j].y - points[i].y) + points[i].x)
-//       )
-//       c = !c;
-//   }
+// The problem
 
-//   return c;
-// }
+// In this kata, you're going write a function called pointInPoly to test if a point is inside a polygon.
+
+// Points will be represented as [x,y] arrays.
+
+// The polygon will be an array of points which are the polygon's vertices. The last point in the array connects back to the first point.
+
+// You can assume:
+
+// The polygon will be a valid simple polygon. That is, it will have at least three points, none of its edges will cross each other, and exactly two edges will meet at each vertex.
+// In the tests, the point will never fall exactly on an edge of the polygon.
 
 type Point = (f32, f32);
 

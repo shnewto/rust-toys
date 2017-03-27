@@ -1,13 +1,30 @@
+// Description:
+
+// For a given chemical formula represented by a string, count the number of atoms of each element contained in the molecule and return an object.
+
+// For example:
+
+// parse_molecule("H2O");           // water
+// // Ok([("H", 2), ("O", 1)])
+
+// parse_molecule("Mg(OH)2");       // magnesium hydroxide
+// // Ok([("Mg", 1), ("O", 2), ("H", 2)]
+
+// parse_molecule("K4[ON(SO3)2]2"); // Fremy's salt
+// // Ok([("K", 4), ("O", 14),("N", 2),("S", 4)])
+
+// parse_molecule("pie")
+// // Err(ParseError)
+// As you can see, some formulas have brackets in them. The index outside the brackets tells you that you have to multiply count of each atom inside the bracket on this index. For example, in Fe(NO3)2 you have one iron atom, two nitrogen atoms and six oxygen atoms.
+
+// Note that brackets may be round, square or curly and can also be nested. Index after the braces is optional.
+
 use std::collections::HashSet;
 
 type Atom = (String, usize);
 type Molecule = Vec<Atom>;
 type ParseError = &'static str;
 
-// #[derive(Debug)]
-// pub struct ParseError {
-
-// }
 
 static ELEMS: &'static [&'static str] =
 &[ "Ac", "Al", "Am", "Sb", "Ar", "As", "At", "Ba", "Bk", "Be", "Bi", "Bh", "B", "Br",

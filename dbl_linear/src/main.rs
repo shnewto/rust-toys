@@ -1,107 +1,78 @@
 fn main() {
-
     println!("{}",dbl_linear(100000));
     println!("{}",dbl_linear(100000));
     println!("{}",dbl_linear(100000));
     println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-    println!("{}",dbl_linear(100000));
-
 }
 
-// static mut A: [u32; 1000000] = [1;1000000];
-// static mut I: u32 = 0;
+// Description:
 
-fn dbl_linear(n: u32) -> u32 {
+// Consider a sequence u where u is defined as follows:
 
-    // unsafe {
-    //     if I >= n {
-    //         return A[n as usize]
-    //     }
-    // }
+// The number u(0) = 1 is the first one in u.
+// For each x in u, then y = 2 * x + 1 and z = 3 * x + 1 must be in u too.
+// There are no other numbers in u.
+// Ex: u = [1, 3, 4, 7, 9, 10, 13, 15, 19, 21, 22, 27, ...]
 
-    let mut v:Vec<u32> = vec![0; (n+2) as usize];
-    v[0] = 1;
-    // let mut b = n;
+// 1 gives 3 and 4, then 3 gives 7 and 10, 4 gives 9 and 13, then 7 gives 15 and 22 and so on...
 
-    // while b >= 10 {
-        for i in 0..n - 2 {
-            let x: u32 = v[i as usize];
-            println!("{}", 2 * x + 1);
-            let y = 2 * x + 1;
-            let mut j = i + 1;
+// Task:
 
-            while j < v.len() as u32 {
-                if (y < v[j as usize] as u32) || (v[j as usize] == 0) {
-                    v[j as usize] = y;
-                    break;
-                }
-                j += 1;
-            }
+// Given parameter n the function dbl_linear (or dblLinear...) returns the element u(n) of the ordered (with <) sequence u.
 
-            let z = 3 * x + 1;
+// Example:
 
-            j = i + 1;
+// dbl_linear(10) should return 22
 
-            while j < v.len() as u32 {
-                if (z < v[j as usize] as u32) || (v[j as usize] == 0) {
-                    v[j as usize] = z;
-                    break;
-                }
-                j += 1;
-            }
+// Note:
+
+// Focus attention on efficiency
+
+
+/// arbitrary big number
+static mut A: [u32; 1000000] = [1;1000000];
+static mut I: u32 = 0;
+
+fn dbl_linear(n: u32) -> u32{
+
+    let mut v:Vec<u32> = vec![];
+
+    unsafe {
+        if I >= n {
+            return A[n as usize];
+        }
+        else {
+            v.push(1);
+        }
+    }
+
+    let mut b = n;
+
+    while b >= 10 {   
+        for i in 0..n {
+            let x = v[i as usize];
+            v.push( 2 * x + 1 );
+            v.push( 3 * x + 1 );
         }
 
-        // v.sort();
-        // v.dedup();
+        v.sort();
+        v.dedup(); 
 
-        // v.truncate((n + 1) as usize);
+        v.truncate((n + 1) as usize);
 
-        // b = b/10;
-    // }
+        b = b/10;
+    }
 
-    // unsafe {
-    //     for i in 0..v.len() {
-    //         A[i as usize] = v[i as usize];
-    //     }
+    unsafe {
+        for i in 0..v.len() {
+            A[i as usize] = v[i as usize];
+        }
 
-    //     I = v.len() as u32;
-    // }
+        I = v.len() as u32;
+    }
 
     v[n as usize]
 }
-
 #[test]
 fn basics_remove_nb() {
     assert_eq!(dbl_linear(10), 22);
