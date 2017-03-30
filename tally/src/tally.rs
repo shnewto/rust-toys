@@ -1,6 +1,14 @@
 use std::collections::HashMap;
 
-// var scoreToTally = function(score){
+// Description:
+
+// I'm creating a scoreboard on my game website, but I want the score to be displayed as tally marks instead of Roman numerals. Write a function that translates the numeric score into tally marks.
+
+// My tally mark font uses the letters a, b, c, d, e to represent tally marks for 1, 2, 3, 4, 5, respectively. I want a space and line break (<br>) after each completed tally (5).
+
+// Assume that the score you receive will be an integer. This function should return an HTML string that I can insert into my website that represents the correct score.
+
+var scoreToTally = function(score){
 // pub fn scoreToTally(score:i32) -> String {
     let tallys: HashMap<i32, &str> = 
     [(1, "a"),

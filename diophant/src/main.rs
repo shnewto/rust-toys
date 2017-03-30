@@ -1,60 +1,101 @@
+// #![feature(test)]
+// extern crate test;
+
+// use test::Bencher;
+
+// #[bench]
+// fn actual(b: &mut Bencher) {
+// 	b.iter(|| solequa(9000005))
+// }
+
 fn main() {
-    // testing(5, vec![(3, 1)]);
-    // testing(20, vec![(6, 2)]);
-    // testing(9001, vec![(4501, 2250)]);
-    // testing(9004, vec![(2252, 1125)]);
-    // testing(9005, vec![(4503, 2251), (903, 449)]);
-    // testing(90005, vec![(45003, 22501), (9003, 4499), (981, 467), (309, 37)]);
-    // testing(90002, vec![]);
-
-    println!(" {} -- {:?}", 9000, solequa(9000));
-    println!(" {} -- {:?}", 9001, solequa(9001));
-    println!(" {} -- {:?}", 9002, solequa(9002));
-    println!(" {} -- {:?}", 9003, solequa(9003));
-    println!(" {} -- {:?}", 9004, solequa(9004));
-    println!(" {} -- {:?}", 9005, solequa(9005));
-    println!(" {} -- {:?}", 9006, solequa(9006));
-    println!(" {} -- {:?}", 9007, solequa(9007));
-    println!(" {} -- {:?}", 9008, solequa(9008));
-    println!(" {} -- {:?}", 9009, solequa(9009));
-
+    println!("{:?}", solequa(9000005));
 }
+
+// Description:
+
+// In mathematics, a Diophantine equation is a polynomial equation, usually in two or more unknowns, such that only the integer solutions are sought or studied.
+
+// In this kata we want to find all integers x, y (x >= 0, y >= 0) solutions of a diophantine equation of the form
+
+//  x ^ 2 - 4 * y ^ 2 = n
+// where the unknowns are x and y and n is a given positive number. Solutions x, y will be given as an array of arrays (Ruby, Python, Clojure, JS, CS, TS)
+
+//  [[x1, y1], [x2, y2] ....]
+// as an array of tuples (Haskell, C++, Elixir)
+
+//  [(x1, y1), (x2, y2) ....] or { {x1, y1}, {x2, y2} ....} or [{x1, y1}, {x2, y2} ....]
+// as an array of pairs (C, see example tests)
+
+// {{x1, y1}{x2, y2} ....}
+// and as a string (Java, C#)
+
+//  "[[x1, y1], [x2, y2] ....]"
+// in decreasing order of the positive xi. If there is no solution returns [] or "[]".
+
+// Examples:
+
+// sol_equa(90005) -->  [[45003, 22501], [9003, 4499], [981, 467], [309, 37]]
+
+// sol_equa(90002) --> []
+
+// (Java, C#)
+
+// solEquaStr(90005) --> "[[45003, 22501], [9003, 4499], [981, 467], [309, 37]]"
+
+// solEquaStr(90002) --> "[]"
+// Hint: x ^ 2 - 4 y ^ 2 = (x - 2y) (x + 2y).
 
 fn solequa(n: u64) -> Vec<(u64, u64)> {
     let mut ret = Vec::new();
     let mut x: u64;
     let mut y: u64;
 
-    x = (n as f64).sqrt() as u64;
+    let bound = ((n as f64).sqrt()) as u64 + 1;
 
-    let xlimit = n / 2 + 1;
-
-    if n % 2 == 0 {
-        if x % 2 != 0 {
-            x += 1;
-        }
-    } else {
-        if x % 2 == 0 {
-            x += 1;
-        }
-    }
-
-    while x <= xlimit {
-        let fx = x as f64;
-
-        y = (( fx * fx - n as f64 ).sqrt() as f64 / 2.0) as u64;
-
-        let res = (fx - 2.0 * y as f64) * (fx + 2.0 * y as f64);
-
-        if res as u64 == n {
-            ret.insert(0, (x, y));
+    for i in 1..bound {
+        if n % i != 0 {
+            continue;
         }
 
-        x += 2;
+        let q = n / i;
+
+        y = (q - i) / 4;
+        x = i + 2 * y;
+
+        if (i == x - 2 * y) && (q == x + 2 * y) {
+            ret.push((x, y));
+        }
     }
 
     ret
 }
+
+// fn solequa(n: u64) -> Vec<(u64, u64)> {
+//     let mut ret = Vec::new();
+//     let mut x: f64;
+//     let mut y: f64 = 1.0;
+//     let mut t: f64 = 1.0;
+
+//     let ylimit = ((n as f64 + 6.0) / 4.0).floor();
+
+//     while y <= ylimit {
+
+//         let s = n as f64 + 4.0 * (y * y);
+        
+//         x = s.sqrt().floor();
+
+//         if ((x - 2.0 * y) * (x + 2.0 * y)) as u64 == n {
+//             ret.insert(0, (x as u64, y as u64));
+//             t = 2.0;
+//         } 
+        
+//         y += t;
+//     }
+
+//     ret
+// }
+
 
 fn testing(n: u64, exp: Vec<(u64, u64)>) -> () {
     assert_eq!(solequa(n), exp)
@@ -88,4 +129,3 @@ fn basics_solequa() {
 
     testing(900000009, vec![(450000005, 225000002), (150000003, 75000000), (50000005, 24999998), (26470597, 13235290), (8823555, 4411752), (2941253, 1470550)]);
 }
-
