@@ -17,3 +17,4 @@ fn main() {
 fn dna_to_rna(dna: &str) -> String {
   str::replace(dna, "T", "U")
 }
+
