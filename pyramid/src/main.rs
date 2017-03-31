@@ -10,16 +10,40 @@ fn main() {
     let pyramid = get_pyramid("mini.txt");
     let mut root = Node { val: pyramid[0][0], l: None, r: None };
 
-    // populate treeee 
+    // populate treeee
 
 
-    populate_binary_tree(&mut root, 1, 0, 1, &pyramid, pyramid.len());  
+    populate_binary_tree(&mut root, 1, 0, 1, &pyramid, pyramid.len());
 
-    print_node(root, 0);
-    root.print();
-    // println!("{:?}", root);
+    // print_node(root, 0);
+
+    let max_sum = max_path(root);
+
+    println!("max sum: {}", max_sum);
 }
 
+use std::cmp;
+
+fn max_path( root: Node ) -> usize {
+
+    let r_max: usize;
+    match root.r {
+        Some(node) => {
+            r_max = max_path(*node);
+        }
+        None => { r_max = 0; }
+    }
+
+    let l_max: usize;
+    match root.l {
+        Some(node) => {
+            l_max = max_path(*node);
+        }
+        None => { l_max = 0; }
+    }
+
+    root.val + cmp::max(l_max, r_max)
+}
 
 fn populate_binary_tree(root: &mut Node, depth: usize, lidx: usize, ridx: usize, pyramid: &Pyramid, max_depth: usize) {
 
@@ -38,22 +62,22 @@ fn populate_binary_tree(root: &mut Node, depth: usize, lidx: usize, ridx: usize,
 }
 
 fn print_node( root: Node, depth: usize ) {
-    
+
     match root.r {
         Some(node) => {
             print_node(*node, depth + 1);
         }
-        None => return,
+        None => {}
     }
-    
+
     println!("{}:{}", std::iter::repeat(" ").take(depth*4).collect::<String>(), root.val );
 
     match root.l {
         Some(node) => {
             print_node(*node, depth + 1);
         }
-        None => return,
-    }    
+        None => {}
+    }
 }
 
 
