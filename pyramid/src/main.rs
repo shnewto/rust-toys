@@ -7,17 +7,43 @@ use std::cmp;
 type Pyramid = Vec<Vec<usize>>;
 
 fn main() {
-    // let mut pyramid = get_pyramid("pyramid.txt");
-    let mut pyramid = get_pyramid("mini.txt");
+    let mut pyramid = get_pyramid("pyramid.txt");
+    // let mut pyramid = get_pyramid("mini.txt");
     // let mut root = Node { val: pyramid[0][0], l: None, r: None };
 
     // populate_binary_tree(&mut root, 1, 0, 1, &pyramid, pyramid.len());
 
     // print_node(root, 0);
     // let max_sum = max_path_tree(root);
-    let max_sum = max_path_vec(pyramid[0][0], 1, 0, 1, &pyramid, pyramid.len());
+    // let max_sum = max_path_vec(pyramid[0][0], 1, 0, 1, &pyramid, pyramid.len());
 
-    println!("max sum: {}", max_sum);
+    // println!("max sum: {}", max_sum);
+    let depth = pyramid.len() - 2;
+    max_path_dynamic(&mut pyramid, depth);
+    println!("max sum: {}", pyramid[0][0]);
+}
+
+
+fn max_path_dynamic( pyramid: &mut Pyramid, depth: usize ) {
+
+    if depth == 0 {
+
+        let l_max = pyramid[depth][0] + pyramid[depth+1][0];
+        let r_max = pyramid[depth][0] + pyramid[depth+1][1];
+
+        pyramid[depth][0] = cmp::max(l_max, r_max);
+
+        return
+    }
+
+    for i in 0..pyramid[depth].len() {
+        let l_max = pyramid[depth][i] + pyramid[depth+1][i];
+        let r_max = pyramid[depth][i] + pyramid[depth+1][i+1];
+
+        pyramid[depth][i] = cmp::max(l_max, r_max);
+    }
+
+    max_path_dynamic(pyramid, depth - 1);
 }
 
 
