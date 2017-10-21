@@ -1,0 +1,6 @@
+[package]
+name = "grasshopper"
+version = "0.1.0"
+authors = ["snewt <snewt@mail>"]
+
+[dependencies]
