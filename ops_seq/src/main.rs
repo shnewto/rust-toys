@@ -20,15 +20,7 @@ fn tests() {
 // 4. -6
 
 fn calc(array: Vec<i32>) -> i32 {
-
-    // let greater_than_zero = |&x| {
-    //     if x > 0 {
-    //         x * x
-    //     }
-    // };    
-
     let mut sum: i32 = 0;
-
     for i in 0..array.len() {
         let mut a = array[i];
         if a > 0 { a = a * a; }
